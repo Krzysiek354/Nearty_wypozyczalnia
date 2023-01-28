@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Wypozyczalnia</title> 
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+<body>
+
+
+    <div class="output"></div>
+
+ 
+
+    <form id="rezerwacja-form">
+      <label for="NazwaNart">NazwaNart:</label>
+      <input type="text" id="NazwaNart" name="NazwaNart" required>
+      <br>
+      <br>
+      <label for="OSOBA">OSOBA:</label>
+      <input type="text" id="OSOBA" name="OSOBA" required>
+      <br>
+      <br>
+      <br>
+      <input type="submit" value="Zarezerwuj">
+  </form>
+
+<script>
+
+
+const form = document.getElementById("rezerwacja-form");
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const NazwaNart = document.getElementById("NazwaNart").value;
+    const OSOBA = document.getElementById("OSOBA").value;
+    const rezerwacja = {
+        NazwaNart: NazwaNart,
+        OSOBA: OSOBA
+    };
+    console.log(rezerwacja);
+   
+
+
+fetch('http://localhost:44436/Home/Wypozycz', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rezerwacja)
+    })
+    .then(res => res.text())
+    .then(data => {
+        console.log('Success:', data);
+        document.querySelector(".output1").innerHTML=(data); 
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+
+
+
+  })
+
+
+    fetch('http://localhost:44436/Home/Index')
+  .then(response => response.json())
+  .then(data => {
+    let zm = '';
+    data.forEach(element => {
+        zm += `<div> ${element.NazwaNart} </div>`;});
+
+        document.querySelector(".output2").innerHTML=(zm);
+    });
+
+
+
+// var formData = new FormData();
+// formData.append("NazwaNart", document.getElementById("NazwaNart").value);
+// formData.append("DataWypo", document.getElementById("DataWypozyczenia").value);
+// formData.append("OSOBA", document.getElementById("OSOBA").value);
+
+
+// //   fetch('http://localhost:44436/Home/Wypozy', {
+// //   method: 'POST',
+// //   headers: {
+// //     'Content-Type': 'application/json'
+// //   },
+// //   body: JSON.stringify({ imie: "kupka" })
+// // })
+// // .then(response => response.json())
+// // .then(data => {
+// //   console.log(data);
+// //   document.querySelector(".output").innerHTML=JSON.stringify(data);  
+// // });
+    
+
+// // fetch('http://localhost:44436/Home/Wypozycz', {
+// //   method: 'POST',
+// //   headers: {
+// //     'Content-Type': 'application/json'
+// //   },
+// //   body: JSON.stringify({ NazwaNart: "LEKI1", DataWypo: "2022-02-02", OSOBA:"tomek" })
+// // })
+// // .then(response => response.json())
+// // .then(data => {
+// //   console.log(data);
+// //   document.querySelector(".output").innerHTML=JSON.stringify(data);  
+// // });
+
+
+
+// fetch('http://localhost:44436/Home/Wypozycz', {
+//   method: 'POST',
+//   body: formData,
+//   headers: {
+//     'Content-Type': 'multipart/form-data'
+//   }
+// })
+// .then(response => response.json())
+// .then(data => {
+//   console.log(data);
+// });
+
+</script>
+
+<br>
+<br>
+
+<div class="output1"></div>
+
+<H1>DOSTEPNE NARTY:</H1>
+<div class="output2"></div>
+
+
+    </body>
+    
+    </html>
+    

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>NartySerwis</title> 
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+<body>
+
+
+    <div class="output"></div>
+
+ 
+
+    <form id="zwolnij-form">
+      <label for="NazwaNart">NazwaNart:</label>
+      <input type="text" id="NazwaNart" name="NazwaNart" required>
+      <br>
+      <br>
+      <input type="submit" value="Usun rezerwacje">
+  </form>
+
+<script>
+
+
+const form = document.getElementById("zwolnij-form");
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const NazwaNart = document.getElementById("NazwaNart").value;
+    const zwolnij = {NazwaNart: NazwaNart};
+    
+    console.log(zwolnij);
+   
+
+fetch('http://localhost:44436/Home/Zwolnij', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(zwolnij)
+    })
+    .then(res => res.text())
+    .then(data => {
+        console.log('Success:', data);
+        document.querySelector(".output1").innerHTML=(data); 
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+  })
+
+  fetch('http://localhost:44436/Home/Serwis_baza')
+  .then(response => response.json())
+  .then(data => {
+    let zm = '';
+    data.forEach(element => {
+        zm += `<div> ${element.NazwaNart}  ---  ${element.OSOBA}  </div>`;});
+
+        document.querySelector(".output2").innerHTML=(zm);
+    });
+
+
+
+</script>   
+
+<br>
+<br>
+
+<div class="output1"></div>
+<br>
+<br>
+<br>
+<h2>Wypozyczone:</h2>
+<br>
+<br>
+<div class="output2"></div>
+
+
+    </body>
+    
+    </html>
+    
